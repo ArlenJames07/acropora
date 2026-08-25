@@ -1,0 +1,20 @@
+#Structural annotations
+#Variation_type	Count	Length_ref	Length_qry
+Syntenic regions	745	117184130	118886373
+Inversions	138	85080678	59884810
+Translocations	4424	69404297	69823285
+Duplications (reference)	716	5938563	-
+Duplications (query)	1926	-	15323422
+Not aligned (reference)	5399	190326596	-
+Not aligned (query)	6624	-	87274608
+
+
+#Sequence annotations
+#Variation_type	Count	Length_ref	Length_qry
+SNPs	2572116	2572116	2572116
+Insertions	172863	-	1618282
+Deletions	167318	1735241	-
+Copygains	110	-	1055463
+Copylosses	107	392960	-
+Highly diverged	38049	157408577	133797104
+Tandem repeats	8	815	678
