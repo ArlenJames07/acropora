@@ -1,16 +1,18 @@
-# Acropora structural variation and synteny
+# *Acropora* chromosome-level comparative genomics
 
-This repository contains a reproducible workflow for comparing chromosome-scale
-assemblies from three *Acropora* species:
+This genomic project performs chromosome-level comparisons among chromosome-scale
+assemblies from four *Acropora* species:
 
 - `A_digitifera`
 - `A_millepora`
 - `A_tenius`
+- `A_cervicornis`
 
-The workflow extracts and normalizes chromosomes 1–14, creates pairwise
-whole-genome alignments with minimap2, identifies rearrangements and sequence
-variation with SyRI, and generates synteny plots with plotsr. A self-comparison
-of `A_tenius` is included as a control.
+The reproducible workflow extracts and normalizes homologous chromosomes 1–14,
+performs every pairwise whole-genome alignment with minimap2, identifies
+rearrangements and sequence variation with SyRI, and visualizes chromosome-level
+synteny with plotsr. A self-comparison of `A_tenius` is included as a technical
+control.
 
 ## Repository layout
 
@@ -20,6 +22,7 @@ of `A_tenius` is included as a control.
 │   ├── A_digitifera.fa.gz
 │   ├── A_millepora.fa.gz
 │   ├── A_tenius.fa.gz
+│   ├── A_cervicornis.fa.gz
 │   └── chromosomes_only/
 │       └── chromosome_mapping.tsv
 ├── results/
@@ -52,20 +55,22 @@ The workflow is written for Bash and a Unix-like environment.
 
 ## Input data
 
-Place the three compressed genome assemblies at:
+Place the four compressed genome assemblies at:
 
 ```text
 genomes/A_digitifera.fa.gz
 genomes/A_millepora.fa.gz
 genomes/A_tenius.fa.gz
+genomes/A_cervicornis.fa.gz
 ```
 
 The FASTA parser recognizes chromosome headers containing either `chrNRef` or
-the phrase `chromosome N`, where `N` is a number from 1 through 14.
+the phrase `chromosome N` (with an optional colon), where `N` is a number from 1
+through 14. Non-chromosomal scaffolds and contigs are excluded.
 
 The preparation script renames homologous chromosomes to `chr1` through
-`chr14`. It also reorders and reverse-complements selected `A_millepora`
-chromosomes according to the mappings defined in
+`chr14`. It also reorders and reverse-complements selected `A_millepora` and
+`A_cervicornis` chromosomes according to the mappings defined in
 `scripts/prepare_chromosomes.py`. The resulting mapping table is written to
 `genomes/chromosomes_only/chromosome_mapping.tsv`.
 
@@ -78,7 +83,9 @@ THREADS=14 ./scripts/run_all.sh
 ```
 
 Change `THREADS` to match the available compute resources. If it is omitted,
-the alignment and SyRI scripts use 14 threads.
+the alignment and SyRI scripts use 14 threads. Completed pairwise comparisons
+are skipped when both their SyRI output and summary are present. Set `FORCE=1`
+to regenerate them.
 
 The stages can also be run independently:
 
@@ -89,20 +96,34 @@ THREADS=14 ./scripts/run_tenius_control.sh
 ./scripts/make_synteny_plots.sh
 ```
 
+To run or regenerate selected comparisons, pass their result-directory names to
+the pairwise script. For example:
+
+```bash
+FORCE=1 THREADS=14 ./scripts/run_pairwise_syri.sh \
+  A_digitifera_vs_A_cervicornis A_tenius_vs_A_cervicornis
+```
+
 The plotting stage expects the corresponding SyRI output files to exist.
 
 ## Outputs
 
-Pairwise results are written under `results/syri_results/` for:
+Pairwise results are written under `results/syri_results/` for all six species
+pairs:
 
 - `A_digitifera_vs_A_millepora`
 - `A_digitifera_vs_A_tenius`
+- `A_digitifera_vs_A_cervicornis`
 - `A_millepora_vs_A_tenius`
+- `A_millepora_vs_A_cervicornis`
+- `A_tenius_vs_A_cervicornis`
 - `A_tenius_vs_A_tenius_control`
 
 Each comparison produces a sorted BAM alignment, BAM index, SyRI output, VCF,
-summary, and log files. Final pairwise and three-genome plots are written to
-`results/syri_results/plots/` in PDF and PNG formats.
+summary, and log files. Final pairwise, three-genome, four-genome, and control
+plots are written to `results/syri_results/plots/` in PDF and PNG formats. The
+combined four-species outputs are named `all_four_synteny.pdf` and
+`all_four_synteny.png`.
 
 ## Version-control policy
 

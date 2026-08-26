@@ -25,7 +25,7 @@ syri -c "${bam}" -F B --cigar \
     --dir "${pair_dir}" \
     --prefix "${pair}." \
     --samplename "${name}_control" \
-    --lf "${pair}.syri.log"
+    --lf syri.log
 
 test -s "${pair_dir}/${pair}.syri.out" || {
     printf 'ERROR: SyRI did not create %s\n' "${pair_dir}/${pair}.syri.out" >&2

@@ -11,11 +11,12 @@ from pathlib import Path
 PROJECT = Path(__file__).resolve().parent.parent
 SOURCE_DIR = PROJECT / "genomes"
 OUTPUT_DIR = SOURCE_DIR / "chromosomes_only"
-ASSEMBLIES = ("A_digitifera", "A_millepora", "A_tenius")
+ASSEMBLIES = ("A_digitifera", "A_millepora", "A_tenius", "A_cervicornis")
 
 # Mappings are source chromosome number -> A. digitifera homolog number.
-# A. millepora homologs and orientations were inferred from dominant asm5
-# whole-chromosome alignments. The other two assemblies already match.
+# A. millepora and A. cervicornis homologs and orientations were inferred from
+# dominant asm5 whole-chromosome alignments against A. digitifera. The other
+# two assemblies already match the A. digitifera chromosome numbering.
 CHROMOSOME_MAPS = {
     "A_digitifera": {number: number for number in range(1, 15)},
     "A_millepora": {
@@ -35,11 +36,28 @@ CHROMOSOME_MAPS = {
         14: 7,
     },
     "A_tenius": {number: number for number in range(1, 15)},
+    "A_cervicornis": {
+        1: 2,
+        2: 3,
+        3: 4,
+        4: 5,
+        5: 8,
+        6: 12,
+        7: 1,
+        8: 11,
+        9: 14,
+        10: 13,
+        11: 9,
+        12: 10,
+        13: 7,
+        14: 6,
+    },
 }
 REVERSE_COMPLEMENT = {
     "A_digitifera": set(),
     "A_millepora": {5, 6, 7, 10, 11, 12, 13, 14},
     "A_tenius": set(),
+    "A_cervicornis": {2, 3, 13, 14},
 }
 COMPLEMENT = str.maketrans(
     "ACGTRYMKSWBDHVNacgtrymkswbdhvn",
@@ -54,7 +72,9 @@ def chromosome_number(header: str) -> int | None:
     if match:
         return int(match.group(1))
 
-    match = re.search(r"\bchromosome\s+(\d+)\b", header, flags=re.IGNORECASE)
+    match = re.search(
+        r"\bchromosome\s*:?\s*(\d+)\b", header, flags=re.IGNORECASE
+    )
     if match:
         return int(match.group(1))
     return None
