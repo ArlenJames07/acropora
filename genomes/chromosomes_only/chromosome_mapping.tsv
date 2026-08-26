@@ -41,3 +41,17 @@ A_tenius	chr11	chr11	forward
 A_tenius	chr12	chr12	forward
 A_tenius	chr13	chr13	forward
 A_tenius	chr14	chr14	forward
+A_cervicornis	chr1	chr2	forward
+A_cervicornis	chr2	chr3	reverse_complemented
+A_cervicornis	chr3	chr4	reverse_complemented
+A_cervicornis	chr4	chr5	forward
+A_cervicornis	chr5	chr8	forward
+A_cervicornis	chr6	chr12	forward
+A_cervicornis	chr7	chr1	forward
+A_cervicornis	chr8	chr11	forward
+A_cervicornis	chr9	chr14	forward
+A_cervicornis	chr10	chr13	forward
+A_cervicornis	chr11	chr9	forward
+A_cervicornis	chr12	chr10	forward
+A_cervicornis	chr13	chr7	reverse_complemented
+A_cervicornis	chr14	chr6	reverse_complemented
