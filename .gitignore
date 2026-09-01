@@ -29,4 +29,4 @@ results/syri_results/plots/*.genomes.txt
 results/syri_results/plots/chromosome_order.txt
 
 # Locally downloaded third-party software (install dependencies separately)
-programs/
+programs/MCScanX
